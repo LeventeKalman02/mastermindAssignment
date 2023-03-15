@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mastermindAssignment.MainPage">
+
+    <ScrollView>
+        <AbsoluteLayout HorizontalOptions="Center" VerticalOptions="Center">
+
+            <VerticalStackLayout x:Name="mainMenu" IsVisible="true" IsEnabled="True">
+                <StackLayout>
+                    <Label Text="Mastermind" FontSize="50" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                    <Label FontSize="20"/>
+                    <Label Text="Welcome to the Mastermind Game!" FontSize="30" />
+                    <Label FontSize="20"/>
+                    <Label Text="Rules: " FontSize="30"/>
+                    <Label Text="> There is a randomly generated solution based on 5 colours:" FontSize="20"/>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="> Red"  TextColor="Red" FontSize="20"/>
+                                <Span Text=" > Blue" TextColor="Blue" FontSize="20"/>
+                                <Span Text=" > Green" TextColor="Green" FontSize="20"/>
+                                <Span Text=" > Yellow" TextColor="Yellow" FontSize="20"/>
+                                <Span Text=" > HotPink" TextColor="HotPink" FontSize="20"/>
+                                <Span Text=" > Cyan" TextColor="Cyan" FontSize="20"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="> You have 10 tries to guess this randomly generated order. &#10;> You can choose a colour by clicking on the black circles to cycle through them." FontSize="20"/>
+                    <Label Text="> When you have chosen your 4 colors, press the check button and the game will give you feedback. " FontSize="20"/>
+                    <Label Text="> If the colour is Green then the colour you have chosen is correct and in the correct position. " FontSize="20"/>
+                    <Label Text="> If the colour is Orange then the colour you have chosen is correct and in the wrong position. " FontSize="20"/>
+                    <Label Text="> If the colour is Black then the colour you have chosen is wrong and in the wrong position. " FontSize="20"/>
+                    <Label Text="> Guess the 4 colours and locations correctly in the amount of guesses available and you win!" FontSize="20"/>
+
+                    <Label Text="Have Fun!&#10;" FontSize="30" HorizontalOptions="Center"/>
+                    <Button x:Name="StartButton" Text="Start Game" FontSize="30" TextColor="Black" WidthRequest="250" Clicked="StartGame"/>
+                </StackLayout>
+            </VerticalStackLayout>
+            
+            <VerticalStackLayout>
+                <StackLayout x:Name="labels" Margin="0,0,0,20" IsVisible="False" IsEnabled="False">
+                    <Label Text="Mastermind" FontSize="40" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+                
+                <StackLayout x:Name="grids">
+
+                    <Grid x:Name="guess_grid" WidthRequest="650" HeightRequest="1050" IsEnabled="False" IsVisible="False">
+
+                        <!--#region Row/Column Definitions-->
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <!--#endregion-->
+
+                        <BoxView x:Name="game_background" BackgroundColor="LightGrey" Grid.ColumnSpan="5" Grid.RowSpan="10" CornerRadius="15"/>
+                        
+                        <Button Grid.Column="6" Grid.Row="0" Text="Check" TextColor="Black" FontSize="20" Padding="0" FontAttributes="Bold" BackgroundColor="White" WidthRequest="80" HeightRequest="80" Clicked="CheckButton"/>
+                        <Button Grid.Column="7" Grid.Row="0" Text="Save" TextColor="Black" FontSize="20" Padding="0" FontAttributes="Bold" BackgroundColor="White" WidthRequest="80" HeightRequest="80" Clicked="SaveGame"/>
+                        <Button Grid.Column="7" Grid.Row="3" Text="load" TextColor="Black" FontSize="20" Padding="0" FontAttributes="Bold" BackgroundColor="White" WidthRequest="80" HeightRequest="80" Clicked="LoadGame"/>
+                        <Button Grid.Column="6" Grid.Row="1" Text="Restart" TextColor="Black" FontSize="20" Padding="0" FontAttributes="Bold" BackgroundColor="White" WidthRequest="80" HeightRequest="80" Clicked="ResetBoard"/>
+                        <Button Grid.Column="7" Grid.Row="1" Text="Exit" TextColor="Black" FontSize="20" Padding="0" FontAttributes="Bold" BackgroundColor="White" WidthRequest="80" HeightRequest="80" Clicked="ExitBtn"/>
+                        <Label x:Name="win_lbl" Grid.Column="7" Grid.Row="2" Text="You have Won! Congratulations!!" TextColor="White" WidthRequest="300" IsVisible="False"/>
+						<Label x:Name="lose_lbl" Grid.Column="7" Grid.Row="2" Text="Oh No! You've run out of guesses!!" TextColor="White" WidthRequest="300" IsVisible="False"/>
+
+
+                        <!--#region Guesses section-->
+
+                        <!--row 0-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="0" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="0" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>                        
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="0" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="0" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        
+                        <!--row 1-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="1" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="1" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="1" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="1" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 2-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="2" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--seoncd circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="2" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="2" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="2" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 3-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="3" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="3" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="3" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="3" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 4-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="4" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="4" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="4" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="4" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 5-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="5" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="5" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="5" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="5" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 6-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="6" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="6" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="6" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="6" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 7-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="7" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="7" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="7" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="7" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 8-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="8" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="8" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="8" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="8" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--row 9-->
+                        <!--first circle-->
+                        <Button Clicked="CycleColor" Grid.Column="0" Grid.Row="9" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--second circle-->
+                        <Button Clicked="CycleColor" Grid.Column="1" Grid.Row="9" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--third circle-->
+                        <Button Clicked="CycleColor" Grid.Column="2" Grid.Row="9" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <!--last circle-->
+                        <Button Clicked="CycleColor" Grid.Column="3" Grid.Row="9" BackgroundColor="Black" HeightRequest="60" WidthRequest="60" CornerRadius="80" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <!--#endregion-->
+
+                        <!--#region result of guess-->
+                        <!--Row 0-->
+                        <BoxView Grid.Column="4" Grid.Row="0" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="0" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="0" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="0" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="0" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="0" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="0" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="0" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80"/>
+
+                        <!--Row 1-->
+                        <BoxView Grid.Column="4" Grid.Row="1" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="1" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="1" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="1" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="1" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="1" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="1" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="1" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 2-->
+                        <BoxView Grid.Column="4" Grid.Row="2" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="2" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="2" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="2" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="2" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="2" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="2" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="2" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 3-->
+                        <BoxView Grid.Column="4" Grid.Row="3" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="3" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="3" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="3" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="3" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="3" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="3" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="3" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 4-->
+                        <BoxView Grid.Column="4" Grid.Row="4" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="4" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="4" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="4" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="4" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="4" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="4" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="4" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 5-->
+                        <BoxView Grid.Column="4" Grid.Row="5" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="5" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="5" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="5" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="5" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="5" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="5" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="5" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 6-->
+                        <BoxView Grid.Column="4" Grid.Row="6" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="6" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="6" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="6" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="6" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="6" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="6" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="6" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 7-->
+                        <BoxView Grid.Column="4" Grid.Row="7" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="7" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="7" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="7" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="7" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="7" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="7" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="7" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <!--Row 8-->
+                        <BoxView Grid.Column="4" Grid.Row="8" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="8" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="8" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="8" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="8" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="8" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="8" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="8" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+                        
+						<!--Row 9-->
+                        <BoxView Grid.Column="4" Grid.Row="9" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="Start" Margin="15,20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="9" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="9" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="Start" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="9" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="17,22" CornerRadius="80"/>
+
+                        <BoxView Grid.Column="4" Grid.Row="9" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="9" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+
+                        <BoxView Grid.Column="4" Grid.Row="9" Color="Black"  HeightRequest="24" WidthRequest="24" HorizontalOptions="End" VerticalOptions="End" Margin="15, 20" CornerRadius="80"/>
+                        <BoxView Grid.Column="4" Grid.Row="9" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="End" Margin="17,22" CornerRadius="80" />
+                        <!--#endregion-->
+                        
+                    </Grid>
+                </StackLayout>
+            </VerticalStackLayout>
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>
